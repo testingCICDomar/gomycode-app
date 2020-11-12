@@ -11,7 +11,7 @@ mongo
 
 # start development server
 
-cd assignment-m05
+cd TESTING
 npm install
 npm start (or npm run dev)
 
