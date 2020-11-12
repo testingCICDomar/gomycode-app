@@ -15,14 +15,14 @@ cd assignment-m05
 npm install
 npm start (or npm run dev)
 
-# Welcome : localhost:9900
+# Welcome : 18.223.28.118:8000
 
-# Enter new order : localhost:9900/enterOrder
+# Enter new order : 18.223.28.118:8000/enterOrder
 
 fill out the form & click submit to add an order
 
-# Retrieve all orders : localhost:9900/getOrders
+# Retrieve all orders : 18.223.28.118:8000/getOrders
 
-# Order Status Dashboard : localhost:9900/orderDashboard
+# Order Status Dashboard : 18.223.28.118:8000/orderDashboard
 
-click send mail button to notify order status
+click send mail button to notify order status  //Not working waiting for API key from sendGrid service
