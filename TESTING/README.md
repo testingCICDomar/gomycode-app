@@ -6,7 +6,7 @@ mongod
 
 mongo
 
-# dbName : db_edureka
+# dbName : db_omar
 # collectionName : orderlist
 
 # start development server
