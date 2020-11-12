@@ -1,11 +1,15 @@
-// importing Expres and Mongoose packages 
+// importing Expres , dotenv and Mongoose packages 
 const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
+require('dotenv').config();
+
+
 
 //Connection to the database
-mongoose.connect("mongodb://omar:omar1994@localhost:27017/gomycode", { useNewUrlParser: true });
+
+mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@localhost:27017/gomycode`, { useNewUrlParser: true });
 
 ///////////////////////////////////////////////////////////////////////////////////////
 /////// Add envdot net to hide mongodb user and pwd 
