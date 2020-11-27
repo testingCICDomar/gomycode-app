@@ -107,7 +107,7 @@ pipeline {
             }
         
         
-        stage('contenariser l'APP'){
+        stage('contenariser APP'){
 
             steps{
                 script {
