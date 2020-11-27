@@ -1,0 +1,130 @@
+pipeline {
+    agent any
+    stages {
+	
+	
+	        stage("Commits/Tags/Branches") {
+            steps {
+                script {
+                    
+                    // Show the select input
+                    env.CTB = input message: 'User input required', ok: 'Choose!',
+                            parameters: [choice(name: 'CTB', choices: ['Commits', 'Tags' ,'Branches'], description: 'Choose an option')]
+                
+                    
+                }
+                echo "category selected: ${env.CTB}"
+                
+            }
+        }
+		
+
+		stage("select tag ") {
+            when {
+                expression { env.CTB == 'Tags' }
+            }
+            steps {
+                script {
+                    sh  '''
+							rm -f /tmp/tag.txt
+                            cd  /home/ec2-user/application/gomycode-app
+							git tag > /tmp/tag.txt
+							chmod 777 /tmp/tag.txt 
+                         '''
+					env.LIST = readFile (file: "/tmp/tag.txt")
+                    env.SELECT_tag = input message: 'User input required', ok: 'Select',
+                            parameters: [choice(name: 'SELECT_tag', choices: env.LIST, description: 'What is the tag to slect?')]
+					
+					
+					sh  '''
+					    rm -f /tmp/tag.txt 
+					    echo ${SELECT_tag} >> /tmp/tag.txt 
+					    chmod 777 /tmp/tag.txt 
+						'''
+						
+					env.SELECT_tag = readFile (file: "/tmp/tag.txt")
+					env.SELECT_BRANCH = readFile (file: "/tmp/tag.txt")
+
+                    }
+					echo "tag selected: ${SELECT_tag}"
+					echo "branch selected: ${SELECT_BRANCH}"
+
+					
+                }
+            }		
+		
+        stage("select Branch") {
+            when {
+                expression { env.CTB == 'Branches' || env.CTB == 'Commits'  }
+            }
+            steps {
+                script {
+                    
+                    env.SELECT_1 = input message: 'User input required', ok: 'OK',
+                            parameters: [choice(name: 'SELECT_1', choices: ['All Branches', 'Recent Modified Branches'], description: 'category selection')]
+                    
+					if (env.SELECT_1 == 'All Branches'){
+						env.LIST = readFile (file: "/home/ec2-user/application/gomycode-app")
+
+						// Show the select input
+						env.SELECT_BRANCH = input message: 'User input required', ok: 'Release!',
+                            parameters: [choice(name: 'SELECT_BRANCH', choices: env.LIST, description: 'What is the Bracnh to slect?')]
+                   
+                
+                    }
+                    
+                }
+			echo "Bracnh selected: ${SELECT_BRANCH}"
+            }
+        }
+		
+		
+
+        
+		
+		
+        stage("Run APP Instance") {
+            steps {
+                script {
+                   sh '''
+				   echo "in this section we will use aws api in jenkins to start web app instance and express server on aws"
+				   echo "figure out how to pull the instance public ip address and add Policy for jenkins on aws"
+				   '''
+                }
+
+            }
+        }
+        
+        stage("Start Robot Test ") {
+            steps {
+                script {
+                    sh '''
+                        echo "in this section we will excécute test.robot to verify our web app"
+                    '''
+                    }
+                }
+				
+            }
+        } 
+        
+        stage('contenariser l'APP'){
+
+            steps{
+                script {
+                    sh '''
+						echo "in this sectio we will move the package to a docker instance and contenarise it"
+						echo "use ansible playbook to push run docker compose and push the image into docker hub"
+					'''
+                }
+            }
+        }
+            
+        stage('Pull and Run image '){
+            steps{
+				sh '''
+				echo "in this section we will pull the docker image and run it on a pre-prod env"
+				'''
+                }
+            }
+        }
+            
