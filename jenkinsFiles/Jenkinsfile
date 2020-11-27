@@ -64,7 +64,7 @@ pipeline {
                             parameters: [choice(name: 'SELECT_1', choices: ['All Branches', 'Recent Modified Branches'], description: 'category selection')]
                     
 					if (env.SELECT_1 == 'All Branches'){
-						env.LIST = readFile (file: "/home/ec2-user/application/gomycode-app")
+						env.LIST = readFile (file: "/home/ec2-user/application/gomycode-app/branch.txt")
 
 						// Show the select input
 						env.SELECT_BRANCH = input message: 'User input required', ok: 'Release!',
